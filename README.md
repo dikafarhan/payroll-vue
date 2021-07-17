@@ -21,5 +21,5 @@ npm run lint
 ```
 
 ### Customize configuration
-### error di bagian register di state
+### error di bagian vmodel karena bukan id
 See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -57,14 +57,14 @@
                       <label class="font-weight-bold">Positions</label>
                         <select
                         class="form-control"
-                        v-model="user.position"
+                        v-model="user.position.pstn_id"
                       >
-                        <option
+                        <option 
                           v-for="departements in user.position"
-                          :key="departements.dprt_id"
-                          :value="departements.dprt_id"
+                          :key="departements.pstn_id"
+                          :value="departements.pstn_id"
                         >
-                          {{ departements }}</option
+                          {{departements}}</option
                         >
                       </select>
                     </div>
