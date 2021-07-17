@@ -57,15 +57,9 @@
                       <label class="font-weight-bold">Positions</label>
                         <select
                         class="form-control"
-                        v-model="user.position.pstn_id"
+                        v-model="user.position_id"
                       >
-                        <option 
-                          v-for="departements in user.position"
-                          :key="departements.pstn_id"
-                          :value="departements.pstn_id"
-                        >
-                          {{departements}}</option
-                        >
+                        <option> {{ user.position.pstn_name }}</option>
                       </select>
                     </div>
                     <div class="form-group">
@@ -126,6 +120,7 @@ export default {
       name: "",
       email: "",
       position: "",
+      position_id:"",
       departement_id: "",
       departement_data: "",
       password: "",
@@ -172,8 +167,8 @@ export default {
         },
       })
         .then((response) => {
-          let data=user.position = response.data.data[0]; // <-- assign state cities 
-          console.log(data);
+      user.position = response.data.data[0];
+        user.position_id=response.data.data[0].pstn_id
         })
         .catch((error) => {
           console.log(error);
