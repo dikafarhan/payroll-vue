@@ -38,10 +38,21 @@
                       {{ validation.email[0] }}
                     </div>
                     <div class="form-group">
-                      <label class="font-weight-bold">Depatements</label>
-                      <select class="form-control"> </select>
+                      <label class="font-weight-bold">PROVINSI</label>
+                      <select
+                        class="form-control"
+                        v-model="dprt_id"
+                      >
+                        <option
+                          v-for="departements in data_departement"
+                          :key="departements.dprt_id"
+                          :value="departements.dprt_id"
+                        >
+                          {{ departements.dprt_name }}</option
+                        >
+                      </select>
                     </div>
-                       <div class="form-group">
+                    <div class="form-group">
                       <label class="font-weight-bold">Positions</label>
                       <select class="form-control"> </select>
                     </div>
@@ -93,7 +104,7 @@
   </div>
 </template>
 <script>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 export default {
@@ -132,10 +143,18 @@ export default {
           validation.value = error;
         });
     }
+    const departements = onMounted(() => {
+      store.dispatch("departement/get_departement");
+    });
+    const data_departement = computed(() => {
+      return store.state.departement.departement;
+    });
     return {
       user,
       validation,
       register,
+      departements,
+      data_departement,
     };
   },
 };

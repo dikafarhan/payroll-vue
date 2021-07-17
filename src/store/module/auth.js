@@ -49,7 +49,8 @@ const auth = {
             //data yang dikirim ke serve untuk proses register
             name: user.name,
             email: user.email,
-            
+            position:user.position,
+            departement:user.departement,
             password: user.password,
             password_confirmation: user.password_confirmation,
           })
