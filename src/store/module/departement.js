@@ -19,6 +19,7 @@ const departement = {
             Api.get("departement")
             .then(function (response) {
                 const data_departement=response.data
+                console.log(data_departement);
                 commit("DEPARTEMENT",data_departement)
             })
             .catch(function (error) {

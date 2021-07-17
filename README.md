@@ -21,4 +21,5 @@ npm run lint
 ```
 
 ### Customize configuration
+### error di bagian register di state
 See [Configuration Reference](https://cli.vuejs.org/config/).
