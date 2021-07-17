@@ -41,10 +41,11 @@
                       <label class="font-weight-bold">PROVINSI</label>
                       <select
                         class="form-control"
-                        v-model="dprt_id"
+                        v-model="user.departement_id"
+                        @change="GetPosition"
                       >
                         <option
-                          v-for="departements in data_departement"
+                          v-for="departements in user.departement_data"
                           :key="departements.dprt_id"
                           :value="departements.dprt_id"
                         >
@@ -104,7 +105,8 @@
   </div>
 </template>
 <script>
-import { ref, reactive, onMounted, computed } from "vue";
+import Api from "../../api/Api";
+import { ref, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 export default {
@@ -114,6 +116,8 @@ export default {
       email: "",
       position: "",
       departement: "",
+      departement_id: "",
+      departement_data: "",
       password: "",
       password_confirmation: "",
     });
@@ -143,18 +147,36 @@ export default {
           validation.value = error;
         });
     }
-    const departements = onMounted(() => {
-      store.dispatch("departement/get_departement");
+    const data_departement = onMounted(() => {
+      Api.get("/departement")
+        .then((response) => {
+          const data = user.departement_data = response.data[0];
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     });
-    const data_departement = computed(() => {
-      return store.state.departement.departement;
-    });
+    function GetPosition() {
+     Api.get("/get_departement", {
+        params: {
+          departement_id: user.departement_id, // ID provinsi
+        },
+      })
+        .then((response) => {
+          let data=user.departement_id = response.data; // <-- assign state cities 
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
     return {
       user,
       validation,
       register,
-      departements,
       data_departement,
+      GetPosition,
     };
   },
 };
