@@ -1,5 +1,5 @@
 <template>
-  <div class="container register">
+  <div class="container Login">
     <div class="row justify-content-center">
       <div class="col-xl-10 col-lg-12 col-md-9">
         <div class="card o-hidden border-0 shadow-lg my-5">
@@ -10,17 +10,7 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4"></h1>
                   </div>
-                  <form class="user" @submit.prevent="register">
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control form-control-user"
-                        id="exampleInputEmail"
-                        aria-describedby="emailHelp"
-                        placeholder="Name"
-                        v-model="user.name"
-                      />
-                    </div>
+                  <form class="user" @submit.prevent="login">
                     <div class="form-group">
                       <input
                         type="email"
@@ -38,14 +28,6 @@
                       {{ validation.email[0] }}
                     </div>
                     <div class="form-group">
-                      <label class="font-weight-bold">Depatements</label>
-                      <select class="form-control"> </select>
-                    </div>
-                       <div class="form-group">
-                      <label class="font-weight-bold">Positions</label>
-                      <select class="form-control"> </select>
-                    </div>
-                    <div class="form-group">
                       <input
                         type="password"
                         class="form-control form-control-user"
@@ -60,28 +42,7 @@
                     >
                       {{ validation.password[0] }}
                     </div>
-                    <div class="form-group">
-                      <input
-                        type="password"
-                        class="form-control form-control-user"
-                        id="exampleInputPassword"
-                        placeholder="password confirmation"
-                        v-model="user.password_confirmation"
-                      />
-                    </div>
-                    <div
-                      v-if="validation.password_confirmation"
-                      class="mt-2 alert alert-danger"
-                    >
-                      {{ validation.password_confirmation[0] }}
-                    </div>
-                    <button
-                      type="submit"
-                      class="btn btn-primary"
-                      style="margin-left:248px;margin-top:20px;border-radius:15px;width:274px;"
-                    >
-                      Submit
-                    </button>
+                    <button type="submit" class="btn btn-primary" style="margin-left:248px;margin-top:20px;border-radius:15px;width:274px;">Login</button>
                   </form>
                 </div>
               </div>
@@ -99,34 +60,28 @@ import { useRouter } from "vue-router";
 export default {
   setup() {
     const user = reactive({
-      name: "",
       email: "",
-      position: "",
-      departement: "",
       password: "",
-      password_confirmation: "",
     });
+    //validation state
     const validation = ref([]);
+
+    //store vuex
     const store = useStore();
+
+    //route
     const router = useRouter();
-    function register() {
-      let name = user.name;
+
+    function login() {
       let email = user.email;
-      let position = user.position;
-      let departement = user.departement;
       let password = user.password;
-      let password_confirmation = user.password_confirmation;
       store
-        .dispatch("auth/register", {
-          name,
+        .dispatch("auth/login", {
           email,
-          position,
-          departement,
           password,
-          password_confirmation,
         })
         .then(() => {
-          router.push({ name: "user" });
+          router.push({ name: "dashboard" });
         })
         .catch((error) => {
           validation.value = error;
@@ -135,7 +90,7 @@ export default {
     return {
       user,
       validation,
-      register,
+      login,
     };
   },
 };
