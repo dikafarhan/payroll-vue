@@ -18,7 +18,7 @@
                         id="exampleInputEmail"
                         aria-describedby="emailHelp"
                         placeholder="Name"
-                        v-model="user.name"
+                        v-model="user.mpls_name"
                       />
                     </div>
                     <div class="form-group">
@@ -38,12 +38,12 @@
                       {{ validation.email[0] }}
                     </div>
                     <div class="form-group">
-                      <label class="font-weight-bold">PROVINSI</label>
                       <select
                         class="form-control"
                         v-model="user.departement_id"
                         @change="GetPosition"
                       >
+                      <option value="">--Choice Departements--</option>
                         <option
                           v-for="departements in user.departement_data"
                           :key="departements.dprt_id"
@@ -54,11 +54,11 @@
                       </select>
                     </div>
                     <div class="form-group">
-                      <label class="font-weight-bold">Positions</label>
                         <select
                         class="form-control"
                         v-model="user.position_id"
                       >
+                        <option value="">--Choice Position--</option>
                         <option> {{ user.position.pstn_name }}</option>
                       </select>
                     </div>
@@ -117,11 +117,11 @@ import { useRouter } from "vue-router";
 export default {
   setup() {
     const user = reactive({
-      name: "",
+      mpls_name: "",
       email: "",
       position: "",
-      position_id:"",
-      departement_id: "",
+      mpls_pstn_id:"",
+      mpls_dprt_id: "",
       departement_data: "",
       password: "",
       password_confirmation: "",
@@ -130,26 +130,15 @@ export default {
     const store = useStore();
     const router = useRouter();
     function register() {
-      let name = user.name;
+      let name = user.mpls_name;
       let email = user.email;
-      let position = user.position;
+      let departement_id=user.mpls_dprt_id;
+      let position_id=user.mpls_pstn_id;
       let password = user.password;
       let password_confirmation = user.password_confirmation;
-      store
-        .dispatch("auth/register", {
-          name,
-          email,
-          position,
-          password,
-          password_confirmation,
-        })
-        .then(() => {
-          router.push({ name: "user" });
-        })
-        .catch((error) => {
-          validation.value = error;
-        });
+      
     }
+    
     const data_departement = onMounted(() => {
       Api.get("/departement")
         .then((response) => {
@@ -167,8 +156,8 @@ export default {
         },
       })
         .then((response) => {
-      user.position = response.data.data[0];
-        user.position_id=response.data.data[0].pstn_id
+        user.position = response.data.data[0];
+        user.position_id=response.data.data[0].pstn_id;  
         })
         .catch((error) => {
           console.log(error);

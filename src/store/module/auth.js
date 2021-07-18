@@ -39,9 +39,7 @@ const auth = {
   //actions
   actions: {
     //action register
-    register({
-      commit
-    }, user) {
+    register(user) {
       //define callback promise
       return new Promise((resolve, reject) => {
         //send data ke server
@@ -49,31 +47,13 @@ const auth = {
             //data yang dikirim ke serve untuk proses register
             name: user.name,
             email: user.email,
-            position:user.position,
-            departement:user.departement,
+            position_id:user.position_id,
+            departement_id:user.departement_id,
             password: user.password,
             password_confirmation: user.password_confirmation,
           })
           .then((response) => {
-            //define variable dengan isi hasil response dari server
-            const token = response.data.token;
-            const user = response.data.user;
-
-            //set localStorage untuk menyimpan token dan data user
-            localStorage.setItem("token", token);
-            localStorage.setItem("user", JSON.stringify(user));
-
-            //set default header axios dengan token
-            Api.defaults.headers.common["Authorization"] = "Bearer " + token;
-
-            //commit auth success ke mutation
-            commit("AUTH_SUCCESS", token, user);
-
-            //commit get user ke mutation
-            commit("GET_USER", user);
-
-            //resolve ke component dengan hasil response
-            resolve(response);
+              console.log(response)
           })
           .catch((error) => {
             //jika gagal, remove localStorage dengan key token
